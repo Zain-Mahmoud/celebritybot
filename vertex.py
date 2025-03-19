@@ -15,24 +15,18 @@ class Vertex:
         """"
         Returns the degree of the vertex
         """
-        return sum(len(self.neighbours[key]) for key in self.neighbours)
+        return len(self.neighbours)
 
-    def add_neighbour(self, item, weight) -> None:
+    def add_neighbour(self, item) -> None:
         """
-        Adds the item with its weight as a neighbour of the vertex
+        Adds the item as a neighbour of the vertex
         """
-        if weight in self.neighbours:
-            self.neighbours[weight].append(Vertex(item))
-        else:
-            self.neighbours[weight] = [Vertex(item)]
+        self.neighbours[Vertex(item)] = 1
 
-    def get_neighbours_weight(self, weight: float) -> set:
+    def get_neighbours_weight(self, weight: float) -> list:
         """
         Returns a list of all the vertices adjacent to this
-        vertex that have the given weight.
+        vertex with the given weight.
 
-        Raises ValueError if no such vertex exists
         """
-        if weight in self.neighbours:
-            return self.neighbours[weight]
-        raise ValueError
+        return [key for key in self.neighbours if self.neighbours[key] == weight]
