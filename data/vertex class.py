@@ -25,3 +25,14 @@ class _Vertex:
             self._neighbours[weight].append(_Vertex(item))
         else:
             self._neighbours[weight] = [_Vertex(item)]
+
+    def get_neighbours_weight(self, weight : float) -> set:
+        """
+        Returns a list of all the vertices adjacent to this
+        vertex that have the given weight.
+
+        Raises ValueError if no such vertex exists
+        """
+        if weight in self._neighbours:
+            return self._neighbours[weight]
+        raise ValueError
