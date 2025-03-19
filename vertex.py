@@ -26,7 +26,7 @@ class Vertex:
         else:
             self.neighbours[weight] = [Vertex(item)]
 
-    def get_neighbours_weight(self, weight : float) -> set:
+    def get_neighbours_weight(self, weight: float) -> set:
         """
         Returns a list of all the vertices adjacent to this
         vertex that have the given weight.
