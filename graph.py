@@ -1,6 +1,6 @@
 from typing import Any
 
-from vertex import Vertex
+from vertex import Vertex, Stop
 
 
 class Graph:
@@ -25,6 +25,10 @@ class Graph:
         The new vertex is not adjacent to any other vertices.
         """
         self.vertices[item] = Vertex(item)
+
+    def add_stop(self, item: Any) -> None:
+        """Add a stop vertex with the given item to this graph."""
+        self.vertices[item] = Stop(item)
 
     def add_edge(self, item1: Any, item2: Any, weight: int) -> None:
         """Add an edge between the two vertices with the given items in this graph.
