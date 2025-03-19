@@ -1,4 +1,4 @@
-class _Vertex():
+class _Vertex:
     """
     A vertex in a graph.
 
