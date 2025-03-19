@@ -36,3 +36,11 @@ class Vertex:
         if weight in self.neighbours:
             return self.neighbours[weight]
         raise ValueError
+
+
+class Stop(Vertex):
+    """A vertex containing stopping punctuation (.!?) instead of a word
+
+    Note: no functionality change from the Vertex class, but differentiated for ease in parsing."""
+
+    pass
