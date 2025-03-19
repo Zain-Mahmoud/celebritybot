@@ -39,10 +39,23 @@ class Graph:
             v2 = self._vertices[item2]
 
             # Add the new edge
-            v1.neighbours.add(v2)
-            v2.neighbours.add(v1)
+            v1.add_neighbour(v2, weight)
+            v2.add_neighbour(v1, weight)
         else:
             # We didn't find an existing vertex for both items.
+            raise ValueError
+
+    def get_neighbours(self, item: str) -> set:
+        """Return a set of the neighbours of the given item.
+
+        Note that the *items* are returned, not the _Vertex objects themselves.
+
+        Raise a ValueError if item does not appear as a vertex in this graph.
+        """
+        if item in self._vertices:
+            v = self._vertices[item]
+            return {neighbour.item for neighbour in v.neighbours}
+        else:
             raise ValueError
 
     def adjacent(self, item1: Any, item2: Any) -> bool:
@@ -56,16 +69,3 @@ class Graph:
         else:
             # We didn't find an existing vertex for both items.
             return False
-
-    def get_neighbours(self, item: Any) -> set:
-        """Return a set of the neighbours of the given item.
-
-        Note that the *items* are returned, not the _Vertex objects themselves.
-
-        Raise a ValueError if item does not appear as a vertex in this graph.
-        """
-        if item in self._vertices:
-            v = self._vertices[item]
-            return {neighbour.item for neighbour in v.neighbours}
-        else:
-            raise ValueError
