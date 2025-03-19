@@ -4,7 +4,7 @@ class Vertex:
 
     Instance Attributes:
         - word: the word stored in the vertex
-        - neighbours: all the vertices that are adjacent to this
+        - neighbours: all the vertices that are adjacent to this vertex
     """
 
     def __init__(self, word) -> None:
