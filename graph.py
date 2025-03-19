@@ -1,21 +1,6 @@
-class _Vertex:
-    """A vertex in a graph.
+from typing import Any
 
-    Instance Attributes:
-        - item: The data stored in this vertex.
-        - neighbours: The vertices that are adjacent to this vertex.
-
-    Representation Invariants:
-        - self not in self.neighbours
-        - all(self in u.neighbours for u in self.neighbours)
-    """
-    item: Any
-    neighbours: set[_Vertex]
-
-    def __init__(self, item: Any, neighbours: set[_Vertex]) -> None:
-        """Initialize a new vertex with the given item and neighbours."""
-        self.item = item
-        self.neighbours = neighbours
+from vertex import _Vertex
 
 
 class Graph:
@@ -39,7 +24,7 @@ class Graph:
 
         The new vertex is not adjacent to any other vertices.
         """
-        self._vertices[item] = _Vertex(item, set())
+        self._vertices[item] = _Vertex(item)
 
     def add_edge(self, item1: Any, item2: Any, weight: int) -> None:
         """Add an edge between the two vertices with the given items in this graph.
