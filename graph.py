@@ -24,13 +24,15 @@ class Graph:
 
         The new vertex is not adjacent to any other vertices.
         """
-        self.vertices[item] = Vertex(item)
+        if item not in self.vertices:
+            self.vertices[item] = Vertex(item)
 
     def add_stop(self, item: Any) -> None:
         """Add a stop vertex with the given item to this graph."""
-        self.vertices[item] = Stop(item)
+        if item not in self.vertices:
+            self.vertices[item] = Stop(item)
 
-    def add_edge(self, item1: Any, item2: Any, weight: int) -> None:
+    def add_edge(self, item1: Any, item2: Any) -> None:
         """Add an edge between the two vertices with the given items in this graph.
 
         Raise a ValueError if item1 or item2 do not appear as vertices in this graph.
@@ -43,8 +45,7 @@ class Graph:
             v2 = self.vertices[item2]
 
             # Add the new edge
-            v1.add_neighbour(v2, weight)
-            v2.add_neighbour(v1, weight)
+            v1.add_neighbour(v2)
         else:
             # We didn't find an existing vertex for both items.
             raise ValueError
@@ -58,18 +59,18 @@ class Graph:
         """
         if item in self.vertices:
             v = self.vertices[item]
-            return {neighbour.item for neighbour in v.neighbours}
+            return {neighbour.word for neighbour in v.neighbours}
         else:
             raise ValueError
 
-    def adjacent(self, item1: Any, item2: Any) -> bool:
-        """Return whether item1 and item2 are adjacent vertices in this graph.
-
-        Return False if item1 or item2 do not appear as vertices in this graph.
-        """
-        if item1 in self.vertices and item2 in self.vertices:
-            v1 = self.vertices[item1]
-            return any(v2.item == item2 for v2 in v1.neighbours)
-        else:
-            # We didn't find an existing vertex for both items.
-            return False
+    # def adjacent(self, item1: Any, item2: Any) -> bool:
+    #     """Return whether item1 and item2 are adjacent vertices in this graph.
+    #
+    #     Return False if item1 or item2 do not appear as vertices in this graph.
+    #     """
+    #     if item1 in self.vertices and item2 in self.vertices:
+    #         v1 = self.vertices[item1]
+    #         return any(v2.item == item2 for v2 in v1.neighbours)
+    #     else:
+    #         # We didn't find an existing vertex for both items.
+    #         return False

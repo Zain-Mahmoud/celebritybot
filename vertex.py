@@ -1,3 +1,6 @@
+from __future__ import annotations
+import graphviz
+
 class Vertex:
     """
     A vertex in a graph.
@@ -5,7 +8,10 @@ class Vertex:
     Instance Attributes:
         - word: the word stored in the vertex
         - neighbours: all the vertices that are adjacent to this vertex
+        - vertex
     """
+    word: str
+    neighbours: dict[Vertex, int]
 
     def __init__(self, word) -> None:
         self.word = word
@@ -15,27 +21,38 @@ class Vertex:
         """"
         Returns the degree of the vertex
         """
-        return sum(len(self.neighbours[key]) for key in self.neighbours)
+        return len(self.neighbours)
 
-    def add_neighbour(self, item, weight) -> None:
+    def add_neighbour(self, v: Vertex) -> None:
         """
-        Adds the item with its weight as a neighbour of the vertex
+        Adds the item as a neighbour of the vertex
         """
-        if weight in self.neighbours:
-            self.neighbours[weight].append(Vertex(item))
+
+        if v in self.neighbours:
+            self.neighbours[v] += 1
         else:
-            self.neighbours[weight] = [Vertex(item)]
+            self.neighbours[v] = 1
 
-    def get_neighbours_weight(self, weight: float) -> set:
-        """
-        Returns a list of all the vertices adjacent to this
-        vertex that have the given weight.
+    def _get_total_neighbour_weights(self) -> int:
+        total_weight = 0
 
-        Raises ValueError if no such vertex exists
-        """
-        if weight in self.neighbours:
-            return self.neighbours[weight]
-        raise ValueError
+        for i in self.neighbours.values():
+            total_weight += i
+
+        return total_weight
+
+    def get_neighbours_and_probabilities(self) -> tuple[list[Vertex], list[float]]:
+
+        neighbours = []
+        probabilities = []
+
+        total_weight = self._get_total_neighbour_weights()
+
+        for k, v in self.neighbours.items():
+            neighbours.append(k)
+            probabilities.append(v / total_weight)
+
+        return neighbours, probabilities
 
 
 class Stop(Vertex):
