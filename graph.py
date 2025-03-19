@@ -1,6 +1,6 @@
 from typing import Any
 
-from vertex import _Vertex
+from vertex import Vertex
 
 
 class Graph:
@@ -13,7 +13,7 @@ class Graph:
     #     - _vertices:
     #         A collection of the vertices contained in this graph.
     #         Maps item to _Vertex object.
-    _vertices: dict[Any, _Vertex]
+    _vertices: dict[Any, Vertex]
 
     def __init__(self) -> None:
         """Initialize an empty graph (no vertices or edges)."""
@@ -24,7 +24,7 @@ class Graph:
 
         The new vertex is not adjacent to any other vertices.
         """
-        self._vertices[item] = _Vertex(item)
+        self._vertices[item] = Vertex(item)
 
     def add_edge(self, item1: Any, item2: Any, weight: int) -> None:
         """Add an edge between the two vertices with the given items in this graph.

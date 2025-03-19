@@ -1,4 +1,4 @@
-class _Vertex:
+class Vertex:
     """
     A vertex in a graph.
 
@@ -22,9 +22,9 @@ class _Vertex:
         Adds the item with its weight as a neighbour of the vertex
         """
         if weight in self._neighbours:
-            self._neighbours[weight].append(_Vertex(item))
+            self._neighbours[weight].append(Vertex(item))
         else:
-            self._neighbours[weight] = [_Vertex(item)]
+            self._neighbours[weight] = [Vertex(item)]
 
     def get_neighbours_weight(self, weight : float) -> set:
         """
