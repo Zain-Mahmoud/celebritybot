@@ -1,7 +1,7 @@
 """
 CSC111 Project 2
 
-SpeechBot
+CelebrityBot
 """
 
 from graph import Graph
@@ -37,7 +37,7 @@ class GUIApp(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.title("SpeechBot")
+        self.title("CelebrityBot")
         self.geometry("400x400")
 
         self._ongoing = False
@@ -47,7 +47,7 @@ class GUIApp(tk.Tk):
     def draw(self):
 
         # Title
-        ttk.Label(self, text="SpeechBot", font=(FONT, 30)).pack()
+        ttk.Label(self, text="CelebrityBot", font=(FONT, 30)).pack()
 
         ttk.Label(self, text="Select a person:", font=(FONT, 12)).pack()
 
