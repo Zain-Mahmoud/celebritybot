@@ -1,21 +1,31 @@
 from __future__ import annotations
+from enum import Enum, auto
 import graphviz
+
+
+class VertexKind(Enum):
+    NGRAM = auto()
+    WORD = auto()
+
 
 class Vertex:
     """
     A vertex in a graph.
 
     Instance Attributes:
-        - word: the word stored in the vertex
+        - word: the word stored in the vertex, or a tuple of n-grams, depending on the vertex type
         - neighbours: all the vertices that are adjacent to this vertex
-        - vertex
+        - kind: whether this is a word or n-gram
     """
-    word: str
+    word: str | tuple
     neighbours: dict[Vertex, int]
+    kind: VertexKind
+
 
     def __init__(self, word) -> None:
         self.word = word
         self.neighbours = {}
+        self.kind = VertexKind.WORD if isinstance(word, str) else VertexKind.NGRAM
 
     def degree(self) -> int:
         """"
@@ -26,6 +36,10 @@ class Vertex:
     def add_neighbour(self, v: Vertex) -> None:
         """
         Adds the item as a neighbour of the vertex
+
+        Preconditions:
+            - not (self.kind == VertexKind.WORD) or (v.kind == VertexKind.NGRAM)
+            - not (self.kind == VertexKind.NGRAM) or (v.kind == VertexKind.WORD)
         """
 
         if v in self.neighbours:
@@ -53,11 +67,3 @@ class Vertex:
             probabilities.append(v / total_weight)
 
         return neighbours, probabilities
-
-
-class Stop(Vertex):
-    """A vertex containing stopping punctuation (.!?) instead of a word
-
-    Note: no functionality change from the Vertex class, but differentiated for ease in parsing."""
-
-    pass

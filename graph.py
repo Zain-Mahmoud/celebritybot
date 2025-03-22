@@ -1,6 +1,6 @@
 from typing import Any
 
-from vertex import Vertex, Stop
+from vertex import Vertex
 
 
 class Graph:
@@ -26,11 +26,6 @@ class Graph:
         """
         if item not in self.vertices:
             self.vertices[item] = Vertex(item)
-
-    def add_stop(self, item: Any) -> None:
-        """Add a stop vertex with the given item to this graph."""
-        if item not in self.vertices:
-            self.vertices[item] = Stop(item)
 
     def add_edge(self, item1: Any, item2: Any) -> None:
         """Add an edge between the two vertices with the given items in this graph.
