@@ -52,13 +52,13 @@ def parse_text(text: str) -> Graph:
         g.add_vertex(next_word)
         g.add_edge(ngram, next_word)
 
-        # Map each individual word
-        for j in range(NGRAM_VALUE):
-            v1_item = tokens[i + j]
-            v2_item = tokens[i + j + 1]
-            g.add_vertex(v1_item)
-            g.add_vertex(v2_item)
-            g.add_edge(v1_item, v2_item)
+    # Map each individual word
+    for i in range(len(tokens) - 1):
+        v1_item = tokens[i]
+        v2_item = tokens[i + 1]
+        g.add_vertex(v1_item)
+        g.add_vertex(v2_item)
+        g.add_edge(v1_item, v2_item)
 
     return g
 
@@ -82,7 +82,7 @@ def predict_next_word(graph: Graph, word: tuple | str) -> str:
         if isinstance(word, tuple):
             return predict_next_word(graph, word[-1])
         else:
-            new_word = difflib.get_close_matches(word, available_strings, n=1)
+            new_word = difflib.get_close_matches(word, available_strings, n=1, cutoff=0)
             return predict_next_word(graph, new_word[0])
 
 
