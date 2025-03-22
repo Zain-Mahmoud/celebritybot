@@ -96,10 +96,9 @@ if __name__ == "__main__":
     prompt = input(f"\nEnter a prompt: ").lower().split()
 
     if len(prompt) > 1:
-        prompt = tuple(prompt[-NGRAM_VALUE:])
-        words += list(prompt)
+        words += list(prompt[-NGRAM_VALUE:])
     else:
-        words.append(prompt)
+        words.append(prompt[0])
 
     while True:
 
