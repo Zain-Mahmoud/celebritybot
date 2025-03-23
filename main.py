@@ -6,6 +6,7 @@ CelebrityBot
 
 from graph import Graph
 
+import os
 import time
 import random
 import tkinter as tk
@@ -101,6 +102,12 @@ class GUIApp(tk.Tk):
 
         if not text_file:
             text_file = tkfiledialog.askopenfilename(filetypes=[("Text files", ".txt")])
+
+            if text_file:
+                friendly_text_file = os.path.basename(text_file)
+                AVAILABLE_TEXT_FILES[friendly_text_file] = text_file
+                self.person_selector_var.set(friendly_text_file)
+                self.person_selector_combobox.config(values=list(AVAILABLE_TEXT_FILES.keys()))
 
         return text_file
 
