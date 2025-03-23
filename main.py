@@ -95,8 +95,6 @@ class GUIApp(tk.Tk):
                 self.output_text_var.set(prompt)
                 self._output_text()
 
-
-
     def _get_selected_text_file(self) -> str:
         text_file = AVAILABLE_TEXT_FILES[self.person_selector_var.get()]
 
@@ -120,8 +118,6 @@ class GUIApp(tk.Tk):
 
         if self._ongoing:
             self.after(random.randint(0, 500), self._output_text)
-
-
 
 
 if __name__ == "__main__":
