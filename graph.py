@@ -6,6 +6,12 @@ from typing import Any
 from vertex import Vertex, VertexKind
 
 
+# Ensure nltk punkt is installed
+try:
+    nltk.data.find('tokenizers/punkt.zip')
+except LookupError:
+    nltk.download('punkt')
+
 
 def contains_end_char(check_string: str | list | tuple) -> bool:
     """
