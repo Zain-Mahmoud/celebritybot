@@ -5,7 +5,7 @@ import networkx as nx
 import plotly
 
 def visualize_graph_plotly(g: Graph, n: int):
-    """Generate a visualization for g using n arbitrary vertices."""
+    """Generate a visualization for g using n arbitrary vertices. If g has less than n vertices, plot all vertices."""
     vis = nx.DiGraph()
     word_vertices = [v for v in g.vertices.values() if isinstance(v.word, str)]
     max_vertices = n
@@ -24,7 +24,7 @@ def visualize_graph_plotly(g: Graph, n: int):
                 vis.add_edge(v.word, u.word, weight=v.neighbours[u])
     pos = nx.spring_layout(vis, weight="weight", seed=42, iterations=50)
 
-    # extract coordinates and edge weight
+    # extract coordinates
     edge_x = []
     edge_y = []
     for u, v in vis.edges():
