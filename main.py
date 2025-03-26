@@ -8,6 +8,8 @@ from graph import Graph
 
 import os
 import random
+import pyperclip
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog as tkfiledialog
@@ -73,6 +75,8 @@ class GUIApp(tk.Tk):
                                       justify=tk.LEFT)
         self.output_label.pack()
 
+        self.copy_button = ttk.Button(self, text="Copy output", command=self._handle_copy_output_button)
+
     def _handle_start_button(self):
         if self._ongoing:
             self._ongoing = False
@@ -89,6 +93,7 @@ class GUIApp(tk.Tk):
             else:
                 self._ongoing = True
                 self.start_button_text_var.set("Stop")
+                self.copy_button.pack()
 
                 self._graph = Graph(text_file, NGRAM_VALUE)
                 self.output_text_var.set(prompt)
@@ -117,6 +122,10 @@ class GUIApp(tk.Tk):
 
         if self._ongoing:
             self.after(random.randint(0, 500), self._output_text)
+
+    def _handle_copy_output_button(self):
+        output = self.output_text_var.get()
+        pyperclip.copy(output)
 
 
 if __name__ == "__main__":
