@@ -52,7 +52,7 @@ class Graph:
     _available_words: list[str]
 
     def __init__(self, text_file: str, ngram_value) -> None:
-        """Initialize an empty graph (no vertices or edges)."""
+        """Initialize a graph populated with the words from the text file and n-gram value."""
         self.vertices = {}
         self.ngram_value = ngram_value
 
