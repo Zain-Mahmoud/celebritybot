@@ -7,7 +7,6 @@ CelebrityBot
 from graph import Graph
 
 import os
-import time
 import random
 import tkinter as tk
 from tkinter import ttk
