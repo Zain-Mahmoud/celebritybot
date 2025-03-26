@@ -153,7 +153,7 @@ class GUIApp(tk.Tk):
 
     def _handle_visualize_button(self):
         """Visualize graph, on button press."""
-        tkmessagebox.showinfo("Visualization", "The visualizer will pick a word at random based on your"
+        tkmessagebox.showinfo("Visualization", "The visualizer will pick a word at random based on your "
                               "selected person, and show a portion of the graph.")
 
         graph_to_visualize_text_file = self._get_selected_text_file()
