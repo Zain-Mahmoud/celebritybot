@@ -12,13 +12,9 @@ try:
 except LookupError:
     nltk.download('punkt')
 
-
+# Helper functions
 def contains_end_char(check_string: str | list | tuple) -> bool:
-    """
-    Return whether the sentence contains a stop character,
-    which is one of: . ! ?
-    """
-
+    """Return whether the sentence contains an end character, which is one of: . ! ?"""
     for i in [".", "!", "?"]:
         if i in check_string:
             return True
@@ -40,12 +36,15 @@ class Graph:
         - all(item == self._vertices[item].item for item in self._vertices)
 
     Instance Attributes:
-        - vertices: A collection of the vertices in the graph.
+        - vertices: A collection of the vertices in the graph
         - ngram_value: The size of n-gram to use
+        - file_name: The name of the text file represented by the graph
     """
 
+    # Instance attributes
     vertices: dict[Any, Vertex]
     ngram_value: int
+    file_name: str
 
     # Private instance attributes
     _available_ngrams: list[tuple]
@@ -55,6 +54,7 @@ class Graph:
         """Initialize a graph populated with the words from the text file and n-gram value."""
         self.vertices = {}
         self.ngram_value = ngram_value
+        self.file_name = text_file
 
         self._parse_text(get_lowered_text_from_file(text_file))
 
@@ -84,21 +84,8 @@ class Graph:
             # We didn't find an existing vertex for both items.
             raise ValueError
 
-    def get_neighbours(self, item: str) -> set:
-        """Return a set of the neighbours of the given item.
-
-        Note that the *items* are returned, not the _Vertex objects themselves.
-
-        Raise a ValueError if item does not appear as a vertex in this graph.
-        """
-        if item in self.vertices:
-            v = self.vertices[item]
-            return {neighbour.word for neighbour in v.neighbours}
-        else:
-            raise ValueError
-
     def _parse_text(self, text: str) -> None:
-        """Go through the text and fill in the current graph."""
+        """Parse the text and fill in the current graph."""
 
         tokens = nltk.word_tokenize(text)
         for i in range(len(tokens) - self.ngram_value):
@@ -120,7 +107,7 @@ class Graph:
         self._find_available_words_and_ngrams()
 
     def _find_available_words_and_ngrams(self):
-        """Puts all available words and ngrams into list."""
+        """Puts all available words and ngrams into lists."""
 
         self._available_words = []
         self._available_ngrams = []

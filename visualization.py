@@ -6,13 +6,15 @@ import plotly
 
 
 def visualize_graph_plotly(g: Graph, n: int):
-    """Generate a visualization for g using n arbitrary vertices. If g has less than n vertices, plot all vertices."""
+    """Generate a visualization for g using n arbitrary vertices.
+    If g has less than n vertices, plot all vertices."""
+
     vis = nx.DiGraph()
     word_vertices = [v for v in g.vertices.values() if isinstance(v.word, str)]
     max_vertices = n
     added_vertices = []
 
-    # make network
+    # Make network
     for v in word_vertices:
         if len(added_vertices) == max_vertices:
             break
@@ -25,7 +27,7 @@ def visualize_graph_plotly(g: Graph, n: int):
                 vis.add_edge(v.word, u.word, weight=v.neighbours[u])
     pos = nx.spring_layout(vis, weight="weight", seed=42, iterations=50)
 
-    # extract coordinates
+    # Extract coordinates
     edge_x = []
     edge_y = []
     for u, v in vis.edges():
@@ -34,10 +36,10 @@ def visualize_graph_plotly(g: Graph, n: int):
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
 
-    # create graph
+    # Create figure
     figure = plotly.graph_objs.Figure()
 
-    # add edges
+    # Add edges to figure
     figure.add_trace(plotly.graph_objs.Scatter(
         x=edge_x, y=edge_y,
         mode='lines',
@@ -45,7 +47,7 @@ def visualize_graph_plotly(g: Graph, n: int):
         hoverinfo='none',
     ))
 
-    # add nodes
+    # Add nodes to figure
     node_x = [pos[node][0] for node in vis.nodes()]
     node_y = [pos[node][1] for node in vis.nodes()]
     figure.add_trace(plotly.graph_objs.Scatter(
@@ -60,10 +62,10 @@ def visualize_graph_plotly(g: Graph, n: int):
         )
     ))
 
-    # layout
+    # Specify layout
     figure.update_layout(
         showlegend=False,
-        title="Word Map",
+        title=f"Word Map for {g.file_name}",
         title_x=0.5,
         title_y=0.95,
         hovermode='closest',
@@ -71,5 +73,5 @@ def visualize_graph_plotly(g: Graph, n: int):
         margin=dict(l=20, r=20, t=40, b=20)
     )
 
-    # display
+    # Display
     figure.show()

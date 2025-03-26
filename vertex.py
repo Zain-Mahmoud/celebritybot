@@ -1,9 +1,13 @@
 from __future__ import annotations
 from enum import Enum, auto
-import graphviz
 
 
 class VertexKind(Enum):
+    """
+    Represents whether the vertex is a single word, or an ngram of specified size.
+
+    The size of the ngram is specified as an int in the Graph class.
+    """
     NGRAM = auto()
     WORD = auto()
 
@@ -23,23 +27,18 @@ class Vertex:
 
 
     def __init__(self, word) -> None:
+        """
+        Initialize a vertex, given a word or ngram.
+
+        Detects whether it is a word or ngram.
+        """
         self.word = word
         self.neighbours = {}
         self.kind = VertexKind.WORD if isinstance(word, str) else VertexKind.NGRAM
 
-    def degree(self) -> int:
-        """"
-        Returns the degree of the vertex
-        """
-        return len(self.neighbours)
-
     def add_neighbour(self, v: Vertex) -> None:
         """
-        Adds the item as a neighbour of the vertex
-
-        Preconditions:
-            - not (self.kind == VertexKind.WORD) or (v.kind == VertexKind.NGRAM)
-            - not (self.kind == VertexKind.NGRAM) or (v.kind == VertexKind.WORD)
+        Adds the item as a neighbour of the vertex.
         """
 
         if v in self.neighbours:
@@ -48,6 +47,9 @@ class Vertex:
             self.neighbours[v] = 1
 
     def _get_total_neighbour_weights(self) -> int:
+        """
+        Get the total weights of this vertex pointing to all neighbour nodes.
+        """
         total_weight = 0
 
         for i in self.neighbours.values():
@@ -56,7 +58,14 @@ class Vertex:
         return total_weight
 
     def get_neighbours_and_probabilities(self) -> tuple[list[Vertex], list[float]]:
+        """
+        Return a tuple containing:
+            - a list of neighbours
+            - a list of each neighbour's probability, calculated from weight / total weights of all neighbours
 
+        Preconditions:
+            - the index of each element in the probablities and neighbours tuple correspond to each other
+        """
         neighbours = []
         probabilities = []
 
