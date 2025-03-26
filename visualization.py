@@ -30,11 +30,27 @@ def visualize_graph_plotly(g: Graph, n: int):
     # Extract coordinates
     edge_x = []
     edge_y = []
+    annotations = []
     for u, v in vis.edges():
         x0, y0 = pos[u]
         x1, y1 = pos[v]
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
+
+        # Add arrow annotation
+        annotations.append(
+            dict(
+                ax=x0, ay=y0,
+                x=x1, y=y1,
+                xref="x", yref="y",
+                axref="x", ayref="y",
+                showarrow=True,
+                arrowhead=3,
+                arrowsize=1.5,
+                arrowwidth=1.5,
+                arrowcolor="gray"
+            )
+        )
 
     # Create figure
     figure = plotly.graph_objs.Figure()
@@ -52,9 +68,10 @@ def visualize_graph_plotly(g: Graph, n: int):
     node_y = [pos[node][1] for node in vis.nodes()]
     figure.add_trace(plotly.graph_objs.Scatter(
         x=node_x, y=node_y,
-        mode='markers',
-        hoverinfo='text',
+        mode='markers+text',
         text=list(vis.nodes()),
+        textposition="top center",
+        hoverinfo='text',
         marker=dict(
             size=10,
             color='blue',
@@ -62,7 +79,7 @@ def visualize_graph_plotly(g: Graph, n: int):
         )
     ))
 
-    # Specify layout
+    # Specify layout with arrows
     figure.update_layout(
         showlegend=False,
         title=f"Word Map for {g.file_name}",
@@ -70,7 +87,8 @@ def visualize_graph_plotly(g: Graph, n: int):
         title_y=0.95,
         hovermode='closest',
         plot_bgcolor='white',
-        margin=dict(l=20, r=20, t=40, b=20)
+        margin=dict(l=20, r=20, t=40, b=20),
+        annotations=annotations
     )
 
     # Display
