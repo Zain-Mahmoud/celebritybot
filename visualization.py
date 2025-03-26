@@ -4,6 +4,7 @@ from graph import Graph
 import networkx as nx
 import plotly
 
+
 def visualize_graph_plotly(g: Graph, n: int):
     """Generate a visualization for g using n arbitrary vertices. If g has less than n vertices, plot all vertices."""
     vis = nx.DiGraph()
