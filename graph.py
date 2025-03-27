@@ -8,9 +8,9 @@ from vertex import Vertex, VertexKind
 
 # Ensure nltk punkt is installed
 try:
-    nltk.data.find('tokenizers/punkt.zip')
+    nltk.data.find('tokenizers/punkt_tab.zip')
 except LookupError:
-    nltk.download('punkt')
+    nltk.download('punkt_tab')
 
 # Helper functions
 def contains_end_char(check_string: str | list | tuple) -> bool:
