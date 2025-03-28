@@ -1,22 +1,20 @@
 """Visualization"""
-
-from graph import Graph
 import networkx as nx
 import plotly
+from graph import Graph
 
 
-def visualize_graph_plotly(g: Graph, n: int):
+def visualize_graph_plotly(g: Graph, n: int) -> None:
     """Generate a visualization for g using n arbitrary vertices.
     If g has less than n vertices, plot all vertices."""
 
     vis = nx.DiGraph()
-    word_vertices = [v for v in g.vertices.values() if isinstance(v.word, str)]
-    max_vertices = n
+    word_vertices = [y for y in g.vertices.values() if isinstance(y.word, str)]
     added_vertices = []
 
     # Make network
     for v in word_vertices:
-        if len(added_vertices) == max_vertices:
+        if len(added_vertices) == n:
             break
         else:
             vis.add_node(v.word)
@@ -32,25 +30,16 @@ def visualize_graph_plotly(g: Graph, n: int):
     edge_y = []
     annotations = []
     for u, v in vis.edges():
-        x0, y0 = pos[u]
-        x1, y1 = pos[v]
-        edge_x.extend([x0, x1, None])
-        edge_y.extend([y0, y1, None])
+        zero_coordinates = pos[u]
+        one_coordinates = pos[v]
+        edge_x.extend([zero_coordinates[0], one_coordinates[0], None])
+        edge_y.extend([zero_coordinates[1], one_coordinates[1], None])
 
         # Add arrow annotation
-        annotations.append(
-            dict(
-                ax=x0, ay=y0,
-                x=x1, y=y1,
-                xref="x", yref="y",
-                axref="x", ayref="y",
-                showarrow=True,
-                arrowhead=3,
-                arrowsize=1.5,
-                arrowwidth=1.5,
-                arrowcolor="gray"
-            )
-        )
+        annotations.append({"ax": zero_coordinates[0], "ay": zero_coordinates[1], "x": one_coordinates[0],
+                            "y": one_coordinates[1], "xref": "x", "yref": "y", "axref": "x", "ayref": "y",
+                            "showarrow": True, "arrowhead": 3, "arrowsize": 1.5, "arrowwidth": 1.5,
+                            "arrowcolor": "gray"})
 
     # Create figure
     figure = plotly.graph_objs.Figure()
@@ -59,24 +48,20 @@ def visualize_graph_plotly(g: Graph, n: int):
     figure.add_trace(plotly.graph_objs.Scatter(
         x=edge_x, y=edge_y,
         mode='lines',
-        line=dict(width=1, color='gray', shape='linear'),
+        line={"width": 1, "color": 'gray', 'shape': 'linear'},
         hoverinfo='none',
     ))
 
     # Add nodes to figure
-    node_x = [pos[node][0] for node in vis.nodes()]
-    node_y = [pos[node][1] for node in vis.nodes()]
+    nodes = [pos[node][0] for node in vis.nodes()], [pos[node][1] for node in vis.nodes()]
+
     figure.add_trace(plotly.graph_objs.Scatter(
-        x=node_x, y=node_y,
+        x=nodes[0], y=nodes[1],
         mode='markers+text',
         text=list(vis.nodes()),
         textposition="top center",
         hoverinfo='text',
-        marker=dict(
-            size=10,
-            color='blue',
-            opacity=0.8
-        )
+        marker={"size": 10, "color": 'blue', "opacity": 0.8}
     ))
 
     # Specify layout with arrows
@@ -87,9 +72,18 @@ def visualize_graph_plotly(g: Graph, n: int):
         title_y=0.95,
         hovermode='closest',
         plot_bgcolor='white',
-        margin=dict(l=20, r=20, t=40, b=20),
+        margin={"l": 20, "r": 20, "t": 40, "b": 20},
         annotations=annotations
     )
 
     # Display
     figure.show()
+
+
+if __name__ == '__main__':
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['graph, networkx, plotly'],
+        'max-line-length': 120
+    })

@@ -5,12 +5,13 @@ CelebrityBot
 """
 
 import difflib
+import os
 from typing import Any
 
 import nltk
 import numpy as np
 
-from vertex import Vertex
+from vertex import Vertex, VertexKind
 
 
 def ensure_nltk_installed() -> None:
@@ -62,8 +63,8 @@ class Graph:
         self.vertices = {}
         self.ngram_value = ngram_value
         self.file_name = text_file
-
-        self._parse_text(get_lowered_text_from_file(text_file))
+        if os.path.exists(self.file_name):
+            self._parse_text(get_lowered_text_from_file(self.file_name))
 
     def add_vertex(self, item: Any) -> None:
         """Add a vertex with the given item to this graph.
@@ -135,7 +136,8 @@ class Graph:
             if isinstance(word, tuple):
                 return self.predict_next_word(word[-1])
             else:
-                new_word = difflib.get_close_matches(word, self.vertices.keys(), n=1, cutoff=0)
+                available_words = [word for word in self.vertices.keys() if self.vertices[word].kind == VertexKind.WORD]
+                new_word = difflib.get_close_matches(word, available_words, n=1, cutoff=0)
                 return self.predict_next_word(new_word[0])
 
 
