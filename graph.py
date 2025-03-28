@@ -46,10 +46,6 @@ class Graph:
     ngram_value: int
     file_name: str
 
-    # Private instance attributes
-    _available_ngrams: list[tuple]
-    _available_words: list[str]
-
     def __init__(self, text_file: str, ngram_value) -> None:
         """Initialize a graph populated with the words from the text file and n-gram value."""
         self.vertices = {}
@@ -104,22 +100,6 @@ class Graph:
             self.add_vertex(v2_item)
             self.add_edge(v1_item, v2_item)
 
-        self._find_available_words_and_ngrams()
-
-    def _find_available_words_and_ngrams(self):
-        """Puts all available words and ngrams into lists."""
-
-        self._available_words = []
-        self._available_ngrams = []
-
-        for item in self.vertices:
-            v = self.vertices[item]
-
-            if v.kind == VertexKind.NGRAM:
-                self._available_ngrams.append(item)
-            elif v.kind == VertexKind.WORD:
-                self._available_words.append(item)
-
     def predict_next_word(self, word: tuple | str) -> str:
         """
         Given a word or a tuple of n words, return a next-word.
@@ -130,7 +110,7 @@ class Graph:
             - word: the word to start with
         """
 
-        if word in self._available_words or word in self._available_ngrams:
+        if word in self.vertices:
             word_vertex = self.vertices[word]
             neighbours, probabilities = word_vertex.get_neighbours_and_probabilities()
             new_word_vertex = np.random.choice(neighbours, p=probabilities)
