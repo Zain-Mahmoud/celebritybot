@@ -46,10 +46,6 @@ class Graph:
     ngram_value: int
     file_name: str
 
-    # Private instance attributes
-    _available_ngrams: list[tuple]
-    _available_words: list[str]
-
     def __init__(self, text_file: str, ngram_value) -> None:
         """Initialize a graph populated with the words from the text file and n-gram value."""
         self.vertices = {}
