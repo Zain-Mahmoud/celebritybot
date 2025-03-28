@@ -136,7 +136,7 @@ class Graph:
             if isinstance(word, tuple):
                 return self.predict_next_word(word[-1])
             else:
-                available_words = [word for word in self.vertices.keys() if self.vertices[word].kind == VertexKind.WORD]
+                available_words = [w for w in self.vertices if self.vertices[w].kind == VertexKind.WORD]
                 new_word = difflib.get_close_matches(word, available_words, n=1, cutoff=0)
                 return self.predict_next_word(new_word[0])
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['difflib', 'typing', 'nltk', 'numpy', 'vertex'],
+        'extra-imports': ['difflib', 'typing', 'nltk', 'numpy', 'os', 'vertex'],
         'allowed-io': ['get_lowered_text_from_file'],
         'max-line-length': 120
     })
