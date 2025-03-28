@@ -1,3 +1,9 @@
+"""
+CSC111 Project 2
+
+CelebrityBot
+"""
+
 from __future__ import annotations
 from enum import Enum, auto
 
@@ -25,8 +31,7 @@ class Vertex:
     neighbours: dict[Vertex, int]
     kind: VertexKind
 
-
-    def __init__(self, word) -> None:
+    def __init__(self, word: str | tuple) -> None:
         """
         Initialize a vertex, given a word or ngram.
 
@@ -57,7 +62,7 @@ class Vertex:
 
         return total_weight
 
-    def get_neighbours_and_probabilities(self) -> tuple[list[Vertex], list[float]]:
+    def get_word_gen_info(self) -> tuple[list[Vertex], list[float]]:
         """
         Return a tuple containing:
             - a list of neighbours
@@ -76,3 +81,12 @@ class Vertex:
             probabilities.append(v / total_weight)
 
         return neighbours, probabilities
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['__future__', 'enum'],
+        'max-line-length': 120
+    })

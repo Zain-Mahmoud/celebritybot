@@ -1,20 +1,31 @@
+"""
+CSC111 Project 2
+
+CelebrityBot
+"""
+
 import difflib
-import nltk
-import numpy as np
+import os
 from typing import Any
 
-from vertex import Vertex, VertexKind
+import nltk
+import numpy as np
+
+from vertex import Vertex
 
 
-# Ensure nltk punkt is installed
-try:
-    nltk.data.find('tokenizers/punkt_tab.zip')
-except LookupError:
-    nltk.download('punkt_tab')
+def ensure_nltk_installed() -> None:
+    """Check that the nltk tokenizer is installed. If not, install it."""
 
-# Helper functions
+    try:
+        nltk.data.find('tokenizers/punkt_tab.zip')
+    except LookupError:
+        nltk.download('punkt_tab')
+
+
 def contains_end_char(check_string: str | list | tuple) -> bool:
     """Return whether the sentence contains an end character, which is one of: . ! ?"""
+
     for i in [".", "!", "?"]:
         if i in check_string:
             return True
@@ -50,19 +61,22 @@ class Graph:
     _available_ngrams: list[tuple]
     _available_words: list[str]
 
-    def __init__(self, text_file: str, ngram_value) -> None:
+    def __init__(self, text_file: str = "", ngram_value: int = 3) -> None:
         """Initialize a graph populated with the words from the text file and n-gram value."""
+
         self.vertices = {}
         self.ngram_value = ngram_value
         self.file_name = text_file
 
-        self._parse_text(get_lowered_text_from_file(text_file))
+        if os.path.exists(self.file_name):
+            self._parse_text(get_lowered_text_from_file(self.file_name))
 
     def add_vertex(self, item: Any) -> None:
         """Add a vertex with the given item to this graph.
 
         The new vertex is not adjacent to any other vertices.
         """
+
         if item not in self.vertices:
             self.vertices[item] = Vertex(item)
 
@@ -74,6 +88,7 @@ class Graph:
         Preconditions:
             - item1 != item2
         """
+
         if item1 in self.vertices and item2 in self.vertices:
             v1 = self.vertices[item1]
             v2 = self.vertices[item2]
@@ -86,6 +101,8 @@ class Graph:
 
     def _parse_text(self, text: str) -> None:
         """Parse the text and fill in the current graph."""
+
+        ensure_nltk_installed()
 
         tokens = nltk.word_tokenize(text)
         for i in range(len(tokens) - self.ngram_value):
@@ -116,7 +133,7 @@ class Graph:
 
         if word in self.vertices:
             word_vertex = self.vertices[word]
-            neighbours, probabilities = word_vertex.get_neighbours_and_probabilities()
+            neighbours, probabilities = word_vertex.get_word_gen_info()
             new_word_vertex = np.random.choice(neighbours, p=probabilities)
             return new_word_vertex.word
         else:
@@ -126,3 +143,13 @@ class Graph:
             else:
                 new_word = difflib.get_close_matches(word, self._available_words, n=1, cutoff=0)
                 return self.predict_next_word(new_word[0])
+
+
+if __name__ == "__main__":
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['difflib', 'os', 'typing', 'nltk', 'numpy', 'vertex'],
+        'allowed-io': ['get_lowered_text_from_file'],
+        'max-line-length': 120
+    })
